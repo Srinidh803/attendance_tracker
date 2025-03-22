@@ -49,6 +49,39 @@
         .hidden {
             display: none;
         }
+
+        @media (max-width: 768px) {
+            .table-container {
+                display: block;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                padding: 10px;
+                background: white;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px;
+                border-bottom: 1px solid #ddd;
+            }
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            td:last-child {
+                border-bottom: none;
+            }
+        }
     </style>
 </head>
 <body>
