@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            cursor: pointer;
+            background-color: #000;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background-color: #333;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #000;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Attendance Tracker</h2>
+    <label>Enter number of subjects: </label>
+    <input type="number" id="numSubjects" min="1" oninput="generateSubjects()">
+    <button onclick="removeTable()">Reset</button>
+    
+    <table id="subjectsTable" class="hidden">
+        <thead>
+            <tr>
+                <th>Classes Held</th>
+                <th>Classes Attended</th>
+                <th>Attendance %</th>
+                <th class="dynamic-header">Classes You Can Skip</th>
+                <th>Skipped</th>
+                <th>Attended Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    
+    <script>
+        function generateSubjects() {
+            const num = document.getElementById("numSubjects").value;
+            const table = document.getElementById("subjectsTable");
+            const tbody = table.querySelector("tbody");
+            tbody.innerHTML = "";
+            table.classList.remove("hidden");
+            for (let i = 0; i < num; i++) {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td><input type="number" class="held" min="0" oninput="calculateAttendance(this)"></td>
+                    <td><input type="number" class="attended" min="0" oninput="calculateAttendance(this)"></td>
+                    <td class="percentage">0%</td>
+                    <td class="skipable">0</td>
+                    <td class="skipped">0</td>
+                    <td class="attendedCount">0</td>
+                    <td>
+                        <button onclick="skipClass(this)">Skip</button>
+                        <button onclick="undoSkip(this)" disabled>Undo Skip</button>
+                        <button onclick="attendClass(this)">Attend</button>
+                        <button onclick="undoAttend(this)" disabled>Undo Attend</button>
+                    </td>
+                `;
+            }
+        }
+        
+        function removeTable() {
+            document.getElementById("numSubjects").value = "";
+            const table = document.getElementById("subjectsTable");
+            table.querySelector("tbody").innerHTML = "";
+            table.classList.add("hidden");
+        }
+        
+        function calculateAttendance(el) {
+            const row = el.closest("tr");
+            const held = parseInt(row.querySelector(".held").value) || 0;
+            const attended = parseInt(row.querySelector(".attended").value) || 0;
+            const percentageEl = row.querySelector(".percentage");
+            const skipableEl = row.querySelector(".skipable");
+            const headerEl = document.querySelector(".dynamic-header");
+            
+            const percentage = held > 0 ? (attended / held * 100).toFixed(2) : 0;
+            let skipable = 0;
+            if (percentage >= 75) {
+                while ((attended / (held + skipable) * 100) >= 75) {
+                    skipable++;
+                }
+                skipable--;
+                headerEl.innerText = "Classes You Can Skip";
+            } else {
+                skipable = Math.ceil((0.75 * held - attended) / 0.25);
+                skipable = skipable < 0 ? 0 : skipable;
+                headerEl.innerText = "Required Classes to 75%";
+            }
+            percentageEl.innerText = percentage + "%";
+            skipableEl.innerText = skipable;
+        }
+        
+        function skipClass(el) {
+            const row = el.closest("tr");
+            const held = row.querySelector(".held");
+            const skipped = row.querySelector(".skipped");
+            held.value = parseInt(held.value) + 1;
+            skipped.innerText = parseInt(skipped.innerText) + 1;
+            calculateAttendance(held);
+            row.querySelector("button[onclick='undoSkip(this)']").disabled = false;
+        }
+        
+        function undoSkip(el) {
+            const row = el.closest("tr");
+            const held = row.querySelector(".held");
+            const skipped = row.querySelector(".skipped");
+            if (parseInt(skipped.innerText) > 0) {
+                held.value = parseInt(held.value) - 1;
+                skipped.innerText = parseInt(skipped.innerText) - 1;
+                calculateAttendance(held);
+            }
+            if (parseInt(skipped.innerText) === 0) el.disabled = true;
+        }
+        
+        function attendClass(el) {
+            const row = el.closest("tr");
+            const held = row.querySelector(".held");
+            const attended = row.querySelector(".attended");
+            const attendedCount = row.querySelector(".attendedCount");
+            held.value = parseInt(held.value) + 1;
+            attended.value = parseInt(attended.value) + 1;
+            attendedCount.innerText = parseInt(attendedCount.innerText) + 1;
+            calculateAttendance(held);
+            row.querySelector("button[onclick='undoAttend(this)']").disabled = false;
+        }
+        
+        function undoAttend(el) {
+            const row = el.closest("tr");
+            const held = row.querySelector(".held");
+            const attended = row.querySelector(".attended");
+            const attendedCount = row.querySelector(".attendedCount");
+            if (parseInt(attendedCount.innerText) > 0) {
+                held.value = parseInt(held.value) - 1;
+                attended.value = parseInt(attended.value) - 1;
+                attendedCount.innerText = parseInt(attendedCount.innerText) - 1;
+                calculateAttendance(held);
+            }
+            if (parseInt(attendedCount.innerText) === 0) el.disabled = true;
+        }
+    </script>
+</body>
+</html>
