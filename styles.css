@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -17,14 +18,8 @@ input, button {
     border: 1px solid #ccc;
 }
 
-.cell.actions {
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Adds space between buttons */
-}
-
 input {
-    width: 80px; /* Set a fixed width */
+    width: 80px; /* Fixed width for desktop */
     text-align: center; /* Center numbers inside input */
 }
 
@@ -33,13 +28,14 @@ button {
     background-color: #000;
     color: white;
     border: none;
+    transition: 0.3s;
 }
 
 button:hover {
     background-color: #333;
 }
 
-/* Table Layout using Divs */
+/* Container Styling */
 #subjectsContainer {
     width: 90%;
     margin: 20px auto;
@@ -49,10 +45,11 @@ button:hover {
     overflow: hidden;
 }
 
+/* Row & Cell Styling */
 .row {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Align items in the center */
+    align-items: center;
     padding: 12px;
     border-bottom: 1px solid #ddd;
 }
@@ -65,7 +62,7 @@ button:hover {
 
 /* Make sure all columns take equal width */
 .cell {
-    flex: 1; 
+    flex: 1;
     text-align: center;
     padding: 10px;
     display: flex;
@@ -73,23 +70,30 @@ button:hover {
     justify-content: center;
 }
 
+/* Action Buttons Layout */
+.cell.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Mobile Responsive Design */
 @media (max-width: 768px) {
-    /* Keep buttons wide but make inputs smaller */
     input {
-        width: 50%; /* Adjust input width */
-        max-width: 150px; /* Prevents inputs from stretching too much */
+        width: 50%;
+        max-width: 150px;
         padding: 8px;
     }
 
     button {
-        width: 100%; /* Buttons take full width for better accessibility */
-        max-width: 200px; /* Prevents buttons from becoming too large */
+        width: 100%;
+        max-width: 200px;
         padding: 10px;
     }
 
     .row {
         flex-wrap: wrap;
-        justify-content: center; /* Centers items */
+        justify-content: center;
     }
 
     .cell {
@@ -97,38 +101,30 @@ button:hover {
         padding: 8px;
     }
 
-    /* Hide the header in mobile view */
+    /* Hide the table header on mobile */
     .header {
         display: none;
     }
 
-    /* Add labels for mobile */
+    /* Show data-labels as titles in mobile view */
+    .row .cell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
     .row .cell::before {
         content: attr(data-label);
         font-weight: bold;
         text-transform: uppercase;
         color: #555;
         display: block;
+        margin-bottom: 5px;
     }
 }
 
-/* Add this at the end of styles.css */
-.row .cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  /* Center align content */
-    padding: 10px;
-}
-
-.row .cell::before {
-    content: attr(data-label);
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #555;
-    display: block;
-    margin-bottom: 5px; /* Adds spacing */
-}
-
+/* Attendance Percentage Styling */
 .attendance-percentage {
     display: flex;
     align-items: center;
@@ -139,5 +135,3 @@ button:hover {
     font-weight: normal;
     margin-right: 5px;
 }
-
-
