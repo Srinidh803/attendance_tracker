@@ -11,21 +11,19 @@
     <label>Enter number of subjects: </label>
     <input type="number" id="numSubjects" min="1" oninput="generateSubjects()">
     <button onclick="removeTable()">Reset</button>
-    
-    <table id="subjectsTable" class="hidden">
-        <thead>
-            <tr>
-                <th>Classes Held</th>
-                <th>Classes Attended</th>
-                <th>Attendance %</th>
-                <th class="dynamic-header">Classes You Can Skip</th>
-                <th>Skipped</th>
-                <th>Attended Count</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+
+    <div id="subjectsContainer" class="hidden">
+        <div class="row header">
+            <div class="cell">Classes Held  </div>
+            <div class="cell">Classes Attended  </div>
+            <div class="cell">Attendance %  </div>
+            <div class="cell dynamic-header">Classes You Can Skip  </div>
+            <div class="cell">Skipped  </div>
+            <div class="cell">Attended Count  </div>
+            <div class="cell">Actions</div>
+        </div>
+        <div id="subjectsList"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
