@@ -9,8 +9,7 @@ h2 {
     color: #333;
 }
 
-/* Centering the input and button section */
-label, input, button {
+input, button {
     padding: 10px;
     margin: 10px;
     font-size: 16px;
@@ -18,9 +17,15 @@ label, input, button {
     border: 1px solid #ccc;
 }
 
+.cell.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Adds space between buttons */
+}
+
 input {
-    width: 80%;
-    max-width: 300px;
+    width: 80px; /* Set a fixed width */
+    text-align: center; /* Center numbers inside input */
 }
 
 button {
@@ -28,82 +33,111 @@ button {
     background-color: #000;
     color: white;
     border: none;
-    width: 80%;
-    max-width: 200px;
 }
 
 button:hover {
     background-color: #333;
 }
 
-/* Responsive table */
-table {
+/* Table Layout using Divs */
+#subjectsContainer {
     width: 90%;
     margin: 20px auto;
-    border-collapse: collapse;
     background: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
 }
 
-th, td {
-    border: 1px solid #ddd;
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align items in the center */
     padding: 12px;
-    text-align: center;
+    border-bottom: 1px solid #ddd;
 }
 
-th {
+.header {
     background-color: #000;
     color: white;
+    font-weight: bold;
 }
 
-/* 📱 Mobile Responsive Fix */
+/* Make sure all columns take equal width */
+.cell {
+    flex: 1; 
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media (max-width: 768px) {
-    /* Make input and button full width */
-    input, button {
-        width: 100%;
-        max-width: none;
+    /* Keep buttons wide but make inputs smaller */
+    input {
+        width: 50%; /* Adjust input width */
+        max-width: 150px; /* Prevents inputs from stretching too much */
+        padding: 8px;
     }
 
-    /* Stack inputs and buttons in a column */
-    label, input, button {
-        display: block;
-        margin: 10px auto;
+    button {
+        width: 100%; /* Buttons take full width for better accessibility */
+        max-width: 200px; /* Prevents buttons from becoming too large */
+        padding: 10px;
     }
 
-    /* Responsive Table */
-    table, thead, tbody, th, td, tr {
-        display: block;
+    .row {
+        flex-wrap: wrap;
+        justify-content: center; /* Centers items */
     }
 
-    thead tr {
+    .cell {
+        flex: 50%;
+        padding: 8px;
+    }
+
+    /* Hide the header in mobile view */
+    .header {
         display: none;
     }
 
-    tr {
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        padding: 10px;
-        background: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    td {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        position: relative;
-    }
-
-    /* Use the attribute data-label to show labels in mobile view */
-    td::before {
+    /* Add labels for mobile */
+    .row .cell::before {
         content: attr(data-label);
         font-weight: bold;
         text-transform: uppercase;
         color: #555;
-    }
-
-    td:last-child {
-        border-bottom: none;
+        display: block;
     }
 }
+
+/* Add this at the end of styles.css */
+.row .cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Center align content */
+    padding: 10px;
+}
+
+.row .cell::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #555;
+    display: block;
+    margin-bottom: 5px; /* Adds spacing */
+}
+
+.attendance-percentage {
+    display: flex;
+    align-items: center;
+}
+
+.attendance-percentage::before {
+    content: "% ";
+    font-weight: normal;
+    margin-right: 5px;
+}
+
+
