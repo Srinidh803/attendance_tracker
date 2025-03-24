@@ -9,7 +9,8 @@ h2 {
     color: #333;
 }
 
-input, button {
+/* Centering the input and button section */
+label, input, button {
     padding: 10px;
     margin: 10px;
     font-size: 16px;
@@ -17,17 +18,25 @@ input, button {
     border: 1px solid #ccc;
 }
 
+input {
+    width: 80%;
+    max-width: 300px;
+}
+
 button {
     cursor: pointer;
     background-color: #000;
     color: white;
     border: none;
+    width: 80%;
+    max-width: 200px;
 }
 
 button:hover {
     background-color: #333;
 }
 
+/* Responsive table */
 table {
     width: 90%;
     margin: 20px auto;
@@ -47,8 +56,21 @@ th {
     color: white;
 }
 
-/* Hide table headers for small screens and use labels instead */
+/* 📱 Mobile Responsive Fix */
 @media (max-width: 768px) {
+    /* Make input and button full width */
+    input, button {
+        width: 100%;
+        max-width: none;
+    }
+
+    /* Stack inputs and buttons in a column */
+    label, input, button {
+        display: block;
+        margin: 10px auto;
+    }
+
+    /* Responsive Table */
     table, thead, tbody, th, td, tr {
         display: block;
     }
